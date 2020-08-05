@@ -15,52 +15,33 @@ typedef pair<ll, ll> pll;
 #define fi first
 #define se second
  
-const int N = 1e6+5;
 
 int main() {
-	int n, m;
-	cin >> n >> m;
-	stack<int> s1, s2, s3;
-	forn(i, n) {
-		int x;
-		cin >> x;
-		s1.push(x);
-	}
-	vector<char> prime(N, true);
-	vector<int> pr;
-	prime[0] = prime[1] = false;
-	for(int i = 2; i < N; i++) {
-		if(prime[i]) {
-			pr.pb(i);
-			for(int j = 2*i; j < N; j+=i)
-				prime[j] = false;
+	int n;
+	cin >> n;
+	vector<int> h(n);
+	forn(i, n) cin >> h[i];
+	stack<int> st;
+	int sq = 0;
+	int i = 0;
+	while(i < n) {
+		if(st.empty() || h[i] >= h[st.top()]) {
+			st.push(i++);
+		} else {
+			int tp = st.top();
+			st.pop();
+			int add = h[tp] * (st.empty()?i:(i-st.top()-1));
+			sq = max(sq, add);
 		}
 	}
 
-
-	forn(q, m) {
-		if(s1.empty())
-			break;
-		while(!s1.empty()) {
-			int t = s1.top();
-			if(t % pr[q] == 0) {
-				s2.push(t);
-			} else s3.push(t);
-			s1.pop();
-		}	
-		while(!s2.empty()) {
-			cout << s2.top() << endl;
-			s2.pop();
-		}
-
-		s1 = s3;
-		while(!s3.empty()) {
-			s3.pop();
-		}
+	while(!st.empty()) {
+		int tp = st.top();
+		st.pop();
+		int add = h[tp]*(st.empty()?i:(i-st.top()-1));
+		sq = max(sq, add);
 	}
-	while(!s1.empty()) {
-		cout << s1.top() << endl;
-		s1.pop();
-	}
+	cout << sq << endl;
 	return 0;
 }
+
