@@ -43,6 +43,64 @@ SinglyLinkedListNode* mergeLists(SinglyLinkedListNode* a, SinglyLinkedListNode* 
 	return result;
 }
 
+SinglyLinkedListNode* mergeLists(SinglyLinkedListNode* a, SinglyLinkedListNode* b) {
+	if(!a)
+		return b;
+	if(!b)
+		return a;
+
+	if(a->data < b->data) {
+		a->next = mergeLists(a->next, b);
+		return a;
+	} else {
+		b->next = mergeLists(a, b->next);
+		return b;
+	}
+}
+
+SinglyLinkedListNode* mergeUtil(SinglyLinkedListNode* a, SinglyLinkedListNode* b) {
+	if(!a->next) {
+		a->next = b;
+		return a;
+	}
+
+	SinglyLinkedListNode *curr1=a, *next1=a->next;
+	SinglyLinkedListNode *curr2=b, *next2=b->next;
+
+	while(next1 && curr2) {
+		if(curr2->data >= curr1->data && curr2->data <= next1->data) {
+			next2 = curr2->next;
+			curr1->next = curr2;
+			curr2->next = next1;
+
+			curr1 = curr2;
+			curr2 = next2;
+		} else if(next1->next) {
+			next1 = next1->next;
+			curr1 = curr1->next;
+		} else {
+			next1->next = curr2;
+			return a;
+		}
+	}
+
+	return a;
+}
+
+SinglyLinkedListNode* mergeLists(SinglyLinkedListNode* a, SinglyLinkedListNode* b) {
+	if(!a)
+		return b;
+	if(!b)
+		return a;
+
+	if(a->data < b->data)
+		return mergeUtil(a, b);
+	else 
+		return mergeUtil(b, a);
+}
+
+
+
 int main() {
 
 	return 0;
