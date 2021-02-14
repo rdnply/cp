@@ -30,16 +30,17 @@ int main() {
 		ll cnt = 0;
 		vector<int> res;
 		for(int i = 0; i < n; i++) {
+			if(i+m-1 >= n) break;
 			bool ok = true;
-			for(int j = 0; j < m; j++) {
+			int j = 0;
+			for(j; j < m; j++) {
 				if(t[j] == '?' || s[i+j] == t[j]) {
-
 				} else {
 					ok = false;
 					break;
-				}	
+				}
 			}
-			if(ok) {
+			if(ok && j == m) {
 				cnt++;
 				res.pb(i);
 			}
